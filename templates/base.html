@@ -7,107 +7,132 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Title</title>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <body>
 <style>
-    .container
-    {
+    .container {
         width: 100%;
     }
-    body
-    {
+
+    body {
         font-size: 15pt;
     }
 </style>
 <style>
     div::-webkit-scrollbar {
         display: none !important;
-            }
-   .ellip2 {
-              overflow: hidden;
-              text-overflow: ellipsis;
-              display: -webkit-box;
-              -webkit-box-orient: vertical;
-              -webkit-line-clamp: 2;
-          }
+    }
 
-  .ellip1 {
-              overflow: hidden;
-              text-overflow: ellipsis;
-              wordwrap: white;
-              display: -webkit-box;
-              -webkit-box-orient: vertical;
-              -webkit-line-clamp: 1;
-          }
+    .ellip2 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
 
-   a:link { color: black; text-decoration: none;}
-   a:visited { color: black; text-decoration: none;}
-   a:hover { color: black; text-decoration: none;}
+    .ellip1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        wordwrap: white;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+    }
 
-  .item_box:hover {
+    a:link {
+        color: black;
+        text-decoration: none;
+    }
 
-    opacity: 1;
+    a:visited {
+        color: black;
+        text-decoration: none;
+    }
 
-  }
+    a:hover {
+        color: black;
+        text-decoration: none;
+    }
 
-  .item_box{
+    .item_box:hover {
 
-    opacity: 0.7;
+        opacity: 1;
 
-  }
+    }
 
+    .item_box {
 
+        opacity: 0.7;
+
+    }
 
 
 </style>
 
-    <!-- Static navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-expand-md  navbar-dark fixed-top " style=" background-color:#417690; padding-left:1em; ">
-          <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+<!-- Static navbar -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-expand-md  navbar-dark fixed-top "
+     style=" background-color:#417690; padding-left:1em; ">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
 
-회원 관리
-</a>
-          <button class="navbar-toggler " type="button" style="background-color: #417690; " data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            회원 관리
+        </a>
+        <button class="navbar-toggler " type="button" style="background-color: #417690; " data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class=" collapse navbar-collapse justify-content-end  " style="background-color: #417690; padding: 0em; " id="navbarNav">
+        </button>
+        <div class=" collapse navbar-collapse justify-content-end  " style="background-color: #417690; padding: 0em; "
+             id="navbarNav">
             <ul class="navbar-nav ">
-              <li class="nav-item">
-                <a class="nav-link
-
-active
-
- " href="/member">| 회원관리 |</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link  " href="/counsel">| 상담관리 |</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link  " href="/program">| 프로그램 |</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link  " href="/support">| 행사관리 |</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link  " href="/admin">| 관리자 |</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="#">| 로그아웃 |</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link "></a>
-              </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/member">| 회원관리 |</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  " href="/counsel">| 상담관리 |</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  " href="/program">| 프로그램 |</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  " href="/support">| 행사관리 |</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  " href="/admin">| 관리자 |</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link " href="#">| 로그아웃 |</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'mainapp:login' %}">| 로그인 |</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link "></a>
+                </li>
             </ul>
-          </div>
-        </div></nav>
+        </div>
+    </div>
+</nav>
 <div style=" height: 4.2em;"></div>
-    <!-- Main component for a primary marketing message or call to action -->
-    {% block content %}
+<!-- Main component for a primary marketing message or call to action -->
+{% block content %}
 
-    {% endblock %}
+{% endblock %}
 
-
+<footer class="footer mt-auto " style="height: 3em; padding-top: 0.8em; padding-left: 1em; background-color:#417690;">
+    <div class="container-fluid">
+        <span style="color: white;">© 마포 보훈회관 회원관리 프로그램</span>
+    </div>
+</footer>
 </body>
 </html>

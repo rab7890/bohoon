@@ -3,101 +3,100 @@
 
 
     <div class="container-fluid">
-  <div class="row" style="  padding-top :0.2em;  ">
+        <div class="row" style="  padding-top :0.2em;  ">
 
 
-<div class="col-12" style="  padding:0em; ">
+            <div class="col-12" style="  padding:0em; ">
 
-<div style="height: 3em; width: 95%; overflow-y: scroll; padding-left: 1.5em ; " class="text-nowrap ">
-    단체 이름 &nbsp;&nbsp;
-  <div class="form-check form-check-inline pt-2">
+                <div style="height: 3em; width: 95%; overflow-y: scroll; padding-left: 1.5em ; " class="text-nowrap ">
+                    단체 이름 &nbsp;&nbsp;
+                <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
+                    {% for g in staff.staff_group_type.all %}
+                        <div class="form-check form-check-inline">
 
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-    <label class="form-check-label" for="inlineCheckbox1">지역</label>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-    <label class="form-check-label" for="inlineCheckbox2">상이</label>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-    <label class="form-check-label" for="inlineCheckbox3">전몰유족</label>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
-    <label class="form-check-label" for="inlineCheckbox4">전몰미망</label>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option5">
-    <label class="form-check-label" for="inlineCheckbox5">무공</label>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option6">
-    <label class="form-check-label" for="inlineCheckbox6">6.25</label>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox7" value="option7">
-    <label class="form-check-label" for="inlineCheckbox7">광복</label>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option8">
-    <label class="form-check-label" for="inlineCheckbox8">고엽제</label>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox9" value="option9">
-    <label class="form-check-label" for="inlineCheckbox9">월남</label>
-  </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox10" value="option10">
-    <label class="form-check-label" for="inlineCheckbox10">특수임무</label>
-  </div>
-</div>
-</div>
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox{{ forloop.counter0 }}"
+                                   checked>
+                            <label class="form-check-label"
+                                   for="inlineCheckbox{{ forloop.counter0 }}">{{ g.name }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
 
 
-<div class="col-12">
+            <div class="col-12">
 
-    <div class="row">
+                <div class="row">
+
+                    <div class="col-12 col-lg-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="id_address">
+                            <label for="floatingInput">주소 및 기타 검색</label>
+                        </div>
+                    </div>
 
 
-     <div class="col-12 col-lg-12">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">주소 및 기타 검색</label>
-              </div>
+                    <div class="col-lg-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="id_mobile" >
+                            <label for="floatingInput">전화번호</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="id_member_name" >
+                            <label for="floatingInput">회원이름</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="row ">
+
+
+                    <div class="col-12 col-lg-12  ">
+                        <button class=" w-100 pt-2 btn " onclick="search_member()"
+                                style="background-color: #417690; color:white; height: 3.5em;">회 원 검 색
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
-
-
-
-
-     <div class="col-lg-12">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">전화번호</label>
-              </div>
-        </div>
-
-        <div class="col-lg-12">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">회원이름</label>
-              </div>
-        </div>
-
     </div>
-</div>
-<div class="col-12">
-<div class="row ">
+    <script>
+        function search_member() {
+
+            var data = {}
+            var ck_list = []
+            data['address'] = $("#id_address").val()
+            data['mobile'] = $("#id_mobile").val()
+            data['member_name'] = $("#id_member_name").val()
+
+            $('input.form-check-input:checked').each(function (){
+                  ck_list.push($(this).next().text());
+            })
+            data['checkbox'] = ck_list;
 
 
+            $.ajax({
+                url: '{% url 'mainapp:ajax_search_member' %}',
+                data: data,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == 'success') {
 
-    <div class="col-12 col-lg-12  ">
-    <button class=" w-100 pt-2 btn " type="submit" style="background-color: #417690; color:white; height: 3.5em;">회 원 검 색</button>
-    </div>
+                        const obj = JSON.parse(data.data);
+                        // 브라우저 콘솔에서 확인
+                        console.log(obj);
+                    }
+                },
 
-  </div>
-</div>
-
-  </div>
-</div>
+            });
+        }
+    </script>
 {% endblock %}

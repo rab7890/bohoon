@@ -6,7 +6,7 @@ class Staff(models.Model):
     user = models.OneToOneField('auth.User', null=False, blank=False, default='1', on_delete=models.CASCADE)
     name = models.CharField(max_length=10, null=False, blank=False)
     memo = models.TextField(null=True, blank=True)
-    group_type = models.ManyToManyField('GroupType', through='RelStaffGroupType', null=True, blank=True,
+    group_type = models.ManyToManyField('GroupType', through='RelStaffGroupType', blank=True,
                                         related_name='group_type_staff')
 
     class Meta:
@@ -30,7 +30,7 @@ class Member(models.Model):
     modified_date = models.DateField(auto_now=True)
     group_type = models.ForeignKey('GroupType', null=True, blank=True, on_delete=models.SET_NULL,
                                    related_name='group_type_member')
-    program = models.ManyToManyField('Program', through='RelMemberProgram', blank=True, null=True,
+    program = models.ManyToManyField('Program', through='RelMemberProgram', blank=True,
                                     related_name='program_member')
 
     class Meta:
@@ -40,7 +40,7 @@ class Member(models.Model):
 class GroupType(models.Model):
     name = models.CharField(max_length=10, null=False, blank=False)
     full_name = models.CharField(max_length=30, null=True, blank=True)
-    staff = models.ManyToManyField('Staff', through='RelStaffGroupType', null=True, blank=True,
+    staff = models.ManyToManyField('Staff', through='RelStaffGroupType', blank=True,
                                         related_name='staff_group_type')
 
     class Meta:
@@ -63,7 +63,7 @@ class Program(models.Model):
     end_date = models.DateField(null=True, blank=True)
     memo = models.TextField(null=True, blank=True)
     program_name = models.ForeignKey('ProgramName', null=True, blank=True, on_delete=models.SET_NULL, related_name='program_name_program')
-    member = models.ManyToManyField('Member', through='RelMemberProgram', blank=True, null=True,
+    member = models.ManyToManyField('Member', through='RelMemberProgram', blank=True,
                                     related_name='member_program')
     class Meta:
         db_table = 'program'
