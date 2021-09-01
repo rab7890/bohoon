@@ -64,6 +64,42 @@
 
                 </div>
             </div>
+           <div class="col-12">
+                <div class="row ">
+
+
+                    <div class="col-12 col-lg-12  ">
+                        <button class=" w-100 pt-2 btn " onclick="register_member()"
+                                style="background-color: #417690; color:white; height: 3.5em;">회 원 등 록
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+          <div class="col-12">
+                <div class="row ">
+
+
+                    <div class="col-12 col-lg-12  ">
+                        <div id="member-table">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>이름</th>
+                                    <th>생년월일</th>
+                                    <th>핸드폰</th>
+                                </tr>
+                                </thead>
+                                <tbody id="member-body">
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
 
         </div>
     </div>
@@ -81,7 +117,7 @@
             })
             data['checkbox'] = ck_list;
 
-
+            $("#member-body").empty();
             $.ajax({
                 url: '{% url 'mainapp:ajax_search_member' %}',
                 data: data,
@@ -91,12 +127,33 @@
                     if (data.status == 'success') {
 
                         const obj = JSON.parse(data.data);
-                        // 브라우저 콘솔에서 확인
+                        let bodys= "";
                         console.log(obj);
+                        for (var i=0; i<obj.length; i++)
+                        {
+                            var name = obj[i].fields.name;
+                            var birth_date = obj[i].fields.birth_date;
+                            var mobile = obj[i].fields.mobile;
+                            var id = obj[i].pk;
+                            bodys += `<tr onclick="click_tr('${id}')"> <td>${name}</td> <td>${birth_date}</td>
+                                    <td>${mobile}</td></tr>`;
+                        }
+                        $("#member-body").append(bodys);
+
                     }
                 },
 
             });
+        }
+        function click_tr(id)
+        {
+            var url_mask = "{% url 'mainapp:member_detail' pk=12345 %}".replace(/12345/, id.toString());
+            location.href = url_mask;
+        }
+        function register_member()
+        {
+            var option = "width = 500, height = 500, top = 100, left = 200, location = no, scrollbars = yes"
+            window.open('{% url 'mainapp:member_register' %}', "register", option);
         }
     </script>
 {% endblock %}
