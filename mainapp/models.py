@@ -37,11 +37,15 @@ class Member(models.Model):
         db_table = 'member'
 
 
+
 class GroupType(models.Model):
     name = models.CharField(max_length=10, null=False, blank=False)
     full_name = models.CharField(max_length=30, null=True, blank=True)
     staff = models.ManyToManyField('Staff', through='RelStaffGroupType', blank=True,
                                         related_name='staff_group_type')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table = 'group_type'
@@ -102,6 +106,7 @@ class Counseling(models.Model):
 
 class GroupEvent(models.Model):
     created_date = models.DateField(auto_now_add=True)
+    event_created_date = models.CharField(max_length=4, null=True, blank=True)
     sul = models.BooleanField(null=True, blank=True)
     bohoon = models.BooleanField(null=True, blank=True)
     choosuk = models.BooleanField(null=True, blank=True)

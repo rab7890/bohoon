@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'bohoon.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bohoon',
+        'USER': 'postgres',
+        'PASSWORD': 'admin@123',
+        'HOST': 'mapobohun.iptime.org',
+        'PORT': '5432'
     }
 }
 

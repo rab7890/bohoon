@@ -10,5 +10,8 @@ urlpatterns = [
     path('member/register', views.member_register_view, name='member_register'),
     path('ajax/member/search', views.ajax_search_member, name='ajax_search_member'),
 
+    path('event', views.event_mgr_view, name='event'),
+
     path('login', views.log_in, name='login'),
+    path('logout', views.log_out, name='logout'),
 ]

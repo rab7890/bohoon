@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="kr">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
@@ -93,7 +93,7 @@
              id="navbarNav">
             <ul class="navbar-nav ">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/member">| 회원관리 |</a>
+                    <a class="nav-link active" href="{% url 'mainapp:member' %}">| 회원관리 |</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link  " href="/counsel">| 상담관리 |</a>
@@ -102,14 +102,14 @@
                     <a class="nav-link  " href="/program">| 프로그램 |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  " href="/support">| 행사관리 |</a>
+                    <a class="nav-link  " href="{% url 'mainapp:event' %}">| 행사관리 |</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link  " href="/admin">| 관리자 |</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link " href="#">| 로그아웃 |</a>
+                        <a class="nav-link " href="{% url 'mainapp:logout' %}">| 로그아웃 |</a>
                     </li>
                 {% else %}
                     <li class="nav-item">

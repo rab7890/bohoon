@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+    <div class="container-fluid">
+        <div class="row" style="  padding-top :0.2em;  ">
+
+            <div class="col-12" style="  padding:0em; ">
+                <div style="height: 3em; width: 95%; overflow-y: scroll; padding-left: 1.5em ; " class="text-nowrap ">
+                    단체 이름 &nbsp;&nbsp;
+                <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
+                    {% for g in staff.staff_group_type.all %}
+                        <div class="form-check form-check-inline">
+
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox{{ forloop.counter0 }}"
+                                   checked>
+                            <label class="form-check-label"
+                                   for="inlineCheckbox{{ forloop.counter0 }}">{{ g.name }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+          <div class="col-12" style="  padding:0em; ">
+
+                <div style="height: 3em; width: 95%; overflow-y: scroll; padding-left: 1.5em ; " class="text-nowrap ">
+                    행사 참석
+                <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
+                    {% for g in participate %}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="participate_input_{{ forloop.counter0 }}"
+                                   checked>
+                            <label class="form-check-label"
+                                   for="participate_input_{{ forloop.counter0 }}">{{ g }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-12">
+
+                <div class="row">
+
+                    <div class="col-12 col-lg-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="id_address">
+                            <label for="floatingInput">주소 및 기타 검색</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="id_mobile" >
+                            <label for="floatingInput">전화번호</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="id_member_name" >
+                            <label for="floatingInput">회원이름</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="row ">
+
+
+                    <div class="col-12 col-lg-12  ">
+                        <button class=" w-100 pt-2 btn " onclick="search_member()"
+                                style="background-color: #417690; color:white; height: 3.5em;">회 원 검 색
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+           <div class="col-12">
+                <div class="row ">
+
+
+                    <div class="col-12 col-lg-12  ">
+                        <button class=" w-100 pt-2 btn " onclick="register_member()"
+                                style="background-color: #417690; color:white; height: 3.5em;">회 원 등 록
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+          <div class="col-12">
+                <div class="row ">
+
+
+                    <div class="col-12 col-lg-12  ">
+                        <div id="member-table">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>이름</th>
+                                    <th>생년월일</th>
+                                    <th>핸드폰</th>
+                                </tr>
+                                </thead>
+                                <tbody id="member-body">
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function search_member() {
+
+            var data = {}
+            var ck_list = []
+            data['address'] = $("#id_address").val()
+            data['mobile'] = $("#id_mobile").val()
+            data['member_name'] = $("#id_member_name").val()
+
+            $('input.form-check-input:checked').each(function (){
+                  ck_list.push($(this).next().text());
+            })
+            data['checkbox'] = ck_list;
+
+            $("#member-body").empty();
+            $.ajax({
+                url: '{% url 'mainapp:ajax_search_member' %}',
+                data: data,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == 'success') {
+
+                        const obj = JSON.parse(data.data);
+                        let bodys= "";
+                        console.log(obj);
+                        for (var i=0; i<obj.length; i++)
+                        {
+                            var name = obj[i].fields.name;
+                            var birth_date = obj[i].fields.birth_date;
+                            var mobile = obj[i].fields.mobile;
+                            var id = obj[i].pk;
+                            bodys += `<tr onclick="click_tr('${id}')"> <td>${name}</td> <td>${birth_date}</td>
+                                    <td>${mobile}</td></tr>`;
+                        }
+                        $("#member-body").append(bodys);
+
+                    }
+                },
+
+            });
+        }
+        function click_tr(id)
+        {
+            var url_mask = "{% url 'mainapp:member_detail' pk=12345 %}".replace(/12345/, id.toString());
+            location.href = url_mask;
+        }
+        function register_member()
+        {
+            var option = "width = 500, height = 500, top = 100, left = 200, location = no, scrollbars = yes"
+            window.open('{% url 'mainapp:member_register' %}', "register", option);
+        }
+    </script>
+{% endblock %}

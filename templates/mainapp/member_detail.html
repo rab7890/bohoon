@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="kr">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
@@ -78,17 +78,17 @@
 
 <div style=" height: 4.2em;"></div>
 <!-- Main component for a primary marketing message or call to action -->
-    <form action = "" method = "post">
+<form action="" method="post">
     {% csrf_token %}
     {% for field in form %}
-    <div class="form-group">
-        {{ field.errors }}
-        {{ field.label_tag }} {{ field }}
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %}
-    </div>
-{% endfor %}
+        <div class="mb-3">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
     <input type="submit" value=Submit">
 </form>
 </body>
