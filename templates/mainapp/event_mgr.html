@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
+    {% csrf_token %}
     <div class="container-fluid">
         <div class="row" style="  padding-top :0.2em;  ">
 
             <div class="col-12" style="  padding:0em; ">
                 <div style="height: 3em; width: 95%; overflow-y: scroll; padding-left: 1.5em ; " class="text-nowrap ">
                     단체 이름 &nbsp;&nbsp;
-                <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
+                    <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
                     {% for g in staff.staff_group_type.all %}
                         <div class="form-check form-check-inline">
 
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox{{ forloop.counter0 }}"
+                            <input class="form-check-input ck-group" type="checkbox"
+                                   id="inlineCheckbox{{ forloop.counter0 }}"
                                    checked>
                             <label class="form-check-label"
                                    for="inlineCheckbox{{ forloop.counter0 }}">{{ g.name }}</label>
@@ -21,14 +22,15 @@
                 </div>
 
             </div>
-          <div class="col-12" style="  padding:0em; ">
+            <div class="col-12" style="  padding:0em; ">
 
                 <div style="height: 3em; width: 95%; overflow-y: scroll; padding-left: 1.5em ; " class="text-nowrap ">
                     행사 참석
-                <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
+                    <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
                     {% for g in participate %}
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="participate_input_{{ forloop.counter0 }}"
+                            <input class="form-check-input ck-participant" type="checkbox"
+                                   id="participate_input_{{ forloop.counter0 }}"
                                    checked>
                             <label class="form-check-label"
                                    for="participate_input_{{ forloop.counter0 }}">{{ g }}</label>
@@ -42,52 +44,47 @@
 
                     <div class="col-12 col-lg-12">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="id_address">
-                            <label for="floatingInput">주소 및 기타 검색</label>
+                            <input type="text" class="form-control" id="id_event_date">
+                            <label for="floatingInput">행사연도</label>
                         </div>
                     </div>
 
                     <div class="col-lg-12">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="id_mobile" >
-                            <label for="floatingInput">전화번호</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="id_member_name" >
+                            <input type="text" class="form-control" id="id_member_name">
                             <label for="floatingInput">회원이름</label>
                         </div>
                     </div>
 
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="row ">
+
+
+                        <div class="col-12 col-lg-12  ">
+                            <button class=" w-100 pt-2 btn " onclick="search_member()"
+                                    style="background-color: #417690; color:white; height: 3.5em;">회 원 검 색
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row ">
+
+
+                        <div class="col-12 col-lg-12  ">
+                            <button class=" w-100 pt-2 btn " onclick="register_member()"
+                                    style="background-color: #417690; color:white; height: 3.5em;">회 원 등 록
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <div class="col-12">
-                <div class="row ">
-
-
-                    <div class="col-12 col-lg-12  ">
-                        <button class=" w-100 pt-2 btn " onclick="search_member()"
-                                style="background-color: #417690; color:white; height: 3.5em;">회 원 검 색
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-           <div class="col-12">
-                <div class="row ">
-
-
-                    <div class="col-12 col-lg-12  ">
-                        <button class=" w-100 pt-2 btn " onclick="register_member()"
-                                style="background-color: #417690; color:white; height: 3.5em;">회 원 등 록
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-          <div class="col-12">
                 <div class="row ">
 
 
@@ -96,9 +93,17 @@
                             <table class="table">
                                 <thead>
                                 <tr>
+                                    <th>행사연도</th>
                                     <th>이름</th>
-                                    <th>생년월일</th>
-                                    <th>핸드폰</th>
+                                    <th>설</th>
+                                    <th>보훈</th>
+                                    <th>추석</th>
+                                    <th>위문품(기타1)</th>
+                                    <th>위문품(기타2)</th>
+                                    <th>위문품(기타3)</th>
+                                    <th>전적지</th>
+                                    <th>체련</th>
+                                    <th>수정</th>
                                 </tr>
                                 </thead>
                                 <tbody id="member-body">
@@ -119,35 +124,71 @@
 
             var data = {}
             var ck_list = []
-            data['address'] = $("#id_address").val()
-            data['mobile'] = $("#id_mobile").val()
+            var ck_participant = []
+            data['event_date'] = $("#id_event_date").val()
             data['member_name'] = $("#id_member_name").val()
 
-            $('input.form-check-input:checked').each(function (){
-                  ck_list.push($(this).next().text());
+            $('input.ck-group:checked').each(function () {
+                ck_list.push($(this).next().text());
             })
-            data['checkbox'] = ck_list;
+            $('input.ck-participant:checked').each(function () {
+                ck_participant.push($(this).next().text());
+            })
+
+            data['ck_group'] = ck_list;
+            data['ck_participant'] = ck_participant;
 
             $("#member-body").empty();
             $.ajax({
-                url: '{% url 'mainapp:ajax_search_member' %}',
+                url: '{% url 'mainapp:ajax_search_group_event' %}',
                 data: data,
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
                     if (data.status == 'success') {
 
-                        const obj = JSON.parse(data.data);
-                        let bodys= "";
-                        console.log(obj);
-                        for (var i=0; i<obj.length; i++)
-                        {
-                            var name = obj[i].fields.name;
-                            var birth_date = obj[i].fields.birth_date;
-                            var mobile = obj[i].fields.mobile;
-                            var id = obj[i].pk;
-                            bodys += `<tr onclick="click_tr('${id}')"> <td>${name}</td> <td>${birth_date}</td>
-                                    <td>${mobile}</td></tr>`;
+
+                        console.log(data.data);
+                        var obj = data.data;
+                        let bodys = "";
+                        for (var i = 0; i < obj.length; i++) {
+                            var f = obj[i];
+                            console.log(f.sul);
+                            if (f.sul === true) {
+                                var ck_sul = "<input class='form-check-input' id='sul-" + f.id + "'  type='checkbox' checked/>"
+                                var ck_bohoon = "<input class='form-check-input' id='bohoon-" + f.id + "'  type='checkbox' checked/>"
+                                var ck_choosuk = "<input class='form-check-input' id='choosuk-" + f.id + "'  type='checkbox' checked/>"
+                                var ck_etc1 = "<input class='form-check-input' id='etc1-" + f.id + "'  type='checkbox' checked/>"
+                                var ck_etc2 = "<input class='form-check-input' id='etc2-" + f.id + "'  type='checkbox' checked/>"
+                                var ck_etc3 = "<input class='form-check-input' id='etc3-" + f.id + "'  type='checkbox' checked/>"
+                                var ck_junjukji = "<input class='form-check-input' id='junjukji-" + f.id + "'  type='checkbox' checked/>"
+                                var ck_charun = "<input class='form-check-input' id='charun-" + f.id + "'  type='checkbox' checked/>"
+
+                            } else {
+                                var ck_sul = "<input class='form-check-input' id='sul-" + f.id + "'  type='checkbox' />"
+                                var ck_bohoon = "<input class='form-check-input' id='bohoon-" + f.id + "'  type='checkbox' />"
+                                var ck_choosuk = "<input class='form-check-input' id='choosuk-" + f.id + "'  type='checkbox' />"
+                                var ck_etc1 = "<input class='form-check-input' id='etc1-" + f.id + "'  type='checkbox' />"
+                                var ck_etc2 = "<input class='form-check-input' id='etc2-" + f.id + "'  type='checkbox' />"
+                                var ck_etc3 = "<input class='form-check-input' id='etc3-" + f.id + "'  type='checkbox' />"
+                                var ck_junjukji = "<input class='form-check-input' id='junjukji-" + f.id + "'  type='checkbox' />"
+                                var ck_charun = "<input class='form-check-input' id='charun-" + f.id + "'  type='checkbox' />"
+                            }
+
+
+                            bodys += `<tr>
+                                    <td id='event_created_date-${f.id}'>${f.event_created_date}</td>
+                                    <td id='member_name-${f.id}'>${f.member.name}</td>
+                                    <td>${ck_sul}</td>
+                                    <td >${ck_bohoon}</td>
+                                    <td>${ck_choosuk}</td>
+                                    <td >${ck_etc1}</td>
+                                    <td >${ck_etc2}</td>
+                                    <td >${ck_etc3}</td>
+                                    <td >${ck_junjukji}</td>
+                                    <td >${ck_charun}</td>
+                                    <td><button onclick="modify_group_event('${f.id}')" class="btn-primary btn">수정</button></td>
+                                    </tr>`;
                         }
                         $("#member-body").append(bodys);
 
@@ -156,15 +197,43 @@
 
             });
         }
-        function click_tr(id)
-        {
+
+        function click_tr(id) {
             var url_mask = "{% url 'mainapp:member_detail' pk=12345 %}".replace(/12345/, id.toString());
             location.href = url_mask;
         }
-        function register_member()
+
+        function modify_group_event(gid) {
+            var data = {}
+            data.gid = gid;
+            data.ck_sul = $("#sul-" + gid).is(":checked") ? "True" : "False";
+            data.ck_bohoon = $("#bohoon-" + gid).is(":checked") ? "True" : "False";
+            data.ck_choosuk = $("#choosuk-" + gid).is(":checked") ? "True" : "False";
+            data.ck_etc1 = $("#etc1-" + gid).is(":checked") ? "True" : "False";
+            data.ck_etc2 = $("#etc2-" + gid).is(":checked") ? "True" : "False";
+            data.ck_etc3 = $("#etc3-" + gid).is(":checked") ? "True" : "False";
+            data.ck_junjukji = $("#junjukji-" + gid).is(":checked") ? "True" : "False";
+            data.ck_charun = $("#charun-" + gid).is(":checked") ? "True" : "False";
+            data.csrfmiddlewaretoken = '{{ csrf_token }}'
+
+            $.ajax({
+                url: '{% url 'mainapp:ajax_modify_event' %}',
+                data: data,
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == 'success') {
+
+                        alert("수정 완료")
+                    }
+                },
+
+            });
+        }
+          function register_member()
         {
-            var option = "width = 500, height = 500, top = 100, left = 200, location = no, scrollbars = yes"
-            window.open('{% url 'mainapp:member_register' %}', "register", option);
+            var option = "width = 800, height = 800, top = 100, left = 200, location = no, scrollbars = yes"
+            window.open('{% url 'mainapp:register_event' %}', "register", option);
         }
     </script>
 {% endblock %}

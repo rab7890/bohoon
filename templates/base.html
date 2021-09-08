@@ -96,24 +96,24 @@
                     <a class="nav-link active" href="{% url 'mainapp:member' %}">| 회원관리 |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  " href="/counsel">| 상담관리 |</a>
+                    <a class="nav-link" href="/counsel">| 상담관리 |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  " href="/program">| 프로그램 |</a>
+                    <a class="nav-link" href="/program">| 프로그램 |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  " href="{% url 'mainapp:event' %}">| 행사관리 |</a>
+                    <a class="nav-link" href="{% url 'mainapp:event' %}">| 행사관리 |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  " href="/admin">| 관리자 |</a>
+                    <a class="nav-link" href="/admin">| 관리자 |</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link " href="{% url 'mainapp:logout' %}">| 로그아웃 |</a>
+                        <a class="nav-link" href="{% url 'mainapp:logout' %}">| 로그아웃 |</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link " href="{% url 'mainapp:login' %}">| 로그인 |</a>
+                        <a class="nav-link" href="{% url 'mainapp:login' %}">| 로그인 |</a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
@@ -128,11 +128,40 @@
 {% block content %}
 
 {% endblock %}
+<style>
+   .footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 
+}
+</style>
 <footer class="footer mt-auto " style="height: 3em; padding-top: 0.8em; padding-left: 1em; background-color:#417690;">
     <div class="container-fluid">
         <span style="color: white;">© 마포 보훈회관 회원관리 프로그램</span>
     </div>
 </footer>
+<script>
+
+    $(function ()
+    {
+         $("a.nav-link").each(function ()
+        {
+           $(this).removeClass('active');
+        })
+        $("a.nav-link").each(function ()
+        {
+            var h = $(this).prop('href');
+            console.log(h);
+            if (h.includes(location.pathname))
+            {
+                $(this).addClass('active')
+            }
+
+        })
+
+    })
+</script>
 </body>
 </html>
