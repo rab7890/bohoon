@@ -166,17 +166,16 @@ active
                         var obj = data.data
                         let bodys = "";
                         for (var i = 0; i < obj.length; i++) {
-                            var id =   obj[i].id; 
-                            var name = obj[i].name;
-                            var birth_date = obj[i].birth_date;
-                            var group_type = obj[i].group_type.name;
-                            var mobile = obj[i].mobile;
-                            var tel = obj[i].tel;
-                            var address = obj[i].address;
-                            var memo = obj[i].memo;
-                            
-                           
-                           
+
+                            var id = obj[i].id??"";
+                            var name = obj[i].name??"";
+                            var birth_date = obj[i].birth_date??"";
+                            var group_type = obj[i].group_type.name??"";
+                            var mobile = obj[i].mobile??"";
+                            var tel = obj[i].tel??"";
+                            var address = obj[i].address??"";
+                            var memo = obj[i].memo??"";
+
                             bodys += `<tr onclick="click_tr('${id}')" style="height: 3.8em; ">
                              <td class="fw-bold"  style="width: 3%;">${i+1}</td>
                              <td style="width: 10%;" >${id}</td>

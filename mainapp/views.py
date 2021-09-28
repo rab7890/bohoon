@@ -192,7 +192,7 @@ def ajax_search_member_by_event(request):
         event_date = request.GET.get('event_date')
         member_name = request.GET.get('member_name')
         fileds = {'설': 'sul', '보훈': 'bohoon', '위문품(추석)': 'choosuk', '위문품(기타1)': 'etc1',
-                  '위문품(기타2)': 'etc2', '위문품(기타3)':'etc3', '전적지순례': 'junjukji', '체련대회': 'charun'}
+                  '위문품(기타2)': 'etc2', '위문품(기타3)': 'etc3', '전적지순례': 'junjukji', '체련대회': 'charun'}
         d = {}
 
         for k in fileds:

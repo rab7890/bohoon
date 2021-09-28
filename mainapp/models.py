@@ -38,7 +38,7 @@ class Member(models.Model):
 
     class Meta:
         db_table = 'member'
-        ordering = ['group_type','name']
+        ordering = ['group_type', 'name']
 
 
 class GroupType(models.Model):
@@ -125,4 +125,5 @@ class GroupEvent(models.Model):
 
     class Meta:
         db_table = 'group_event'
-        ordering = ['-event_created_date','member']
+        ordering = ['-event_created_date', 'member']
+        unique_together = ["event_created_date", "member"]
