@@ -1,239 +1,478 @@
 {% extends 'base.html' %}
+
+{% block title %}
+    마포보훈회관 / 행사관리
+{% endblock %}
+
+{% block menu_title %}
+    행사관리
+{% endblock %}
+
+{% block menu4 %}
+    active
+{% endblock %}
+
+
 {% block content %}
 
     {% csrf_token %}
     <div class="container-fluid">
-        <div class="row" style="  padding-top :0.2em;  ">
+        <div class="row" style="  padding-top :0.1em;  ">
 
             <div class="col-12" style="  padding:0em; ">
-                <div style="height: 3em; width: 95%; overflow-y: scroll; padding-left: 1.5em ; " class="text-nowrap ">
+                <div style="height: 3em; width: 95%;  padding-left: 0.6em ; font-size: 1.1em; word-break:keep-all;">
                     단체 이름 &nbsp;&nbsp;
                     <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
                     {% for g in staff.staff_group_type.all %}
                         <div class="form-check form-check-inline">
 
                             <input class="form-check-input ck-group" type="checkbox"
-                                   id="inlineCheckbox{{ forloop.counter0 }}"
+                                   id="event_check{{ forloop.counter0 }}"
                                    checked>
                             <label class="form-check-label"
-                                   for="inlineCheckbox{{ forloop.counter0 }}">{{ g.name }}</label>
+                                   for="event_check{{ forloop.counter0 }}">{{ g.name }}</label>
                         </div>
                     {% endfor %}
                 </div>
 
             </div>
-            <div class="col-12" style="  padding:0em; ">
 
-                <div style="height: 3em; width: 95%; overflow-y: scroll; padding-left: 1.5em ; " class="text-nowrap ">
-                    행사 참석
-                    <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
-                    {% for g in participate %}
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input ck-participant" type="checkbox"
-                                   id="participate_input_{{ forloop.counter0 }}"
-                                   checked>
-                            <label class="form-check-label"
-                                   for="participate_input_{{ forloop.counter0 }}">{{ g }}</label>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+
             <div class="col-12">
 
                 <div class="row">
 
-                    <div class="col-12 col-lg-12">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="id_event_date">
-                            <label for="floatingInput">행사연도</label>
-                        </div>
-                    </div>
-
                     <div class="col-lg-12">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="id_member_name">
-                            <label for="floatingInput">회원이름</label>
+
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">  행 사 년 도</span>
+                            <select id="id_event_date" class="form-select">
+                            </select>
+
                         </div>
+                        <div class="container" style="height: 1em;"></div>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">  회  원  이  름  </span>
+                            <input onkeyup="enter_key()" type="text" class="form-control" id="id_member_name">
+                        </div>
+
                     </div>
 
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <div class="row ">
 
 
-                        <div class="col-12 col-lg-12  ">
-                            <button class=" w-100 pt-2 btn " onclick="search_member()"
-                                    style="background-color: #417690; color:white; height: 3.5em;">회 원 검 색
+                <div class="container" style="height: 1em;"></div>
+
+
+                <div class="col-12" style="  padding:0em; ">
+
+                    <div style="height: 3em; width: 95%;  padding-left: 0.6em ; font-size: 1.1em; word-break:keep-all;">
+                        행사 체크란 숨김 &nbsp&nbsp
+
+                        <div class="form-check form-check-inline pt-2">
+                            <input class="form-check-input" onchange="chk_display()" type="checkbox" id="display_check1"
+                                   checked value="option1">
+                            <label class="form-check-label" for="display_check1">설</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" onchange="chk_display()" type="checkbox" id="display_check2"
+                                   checked value="option2">
+                            <label class="form-check-label" for="display_check2">보훈</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" onchange="chk_display()" type="checkbox" id="display_check3"
+                                   checked value="option3">
+                            <label class="form-check-label" for="display_check3">추석</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" onchange="chk_display()" type="checkbox" id="display_check4"
+                                   checked value="option4">
+                            <label class="form-check-label" for="display_check4">전적지</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" onchange="chk_display()" type="checkbox" id="display_check5"
+                                   checked value="option5">
+                            <label class="form-check-label" for="display_check5">체련</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" onchange="chk_display()" type="checkbox" id="display_check6"
+                                   checked value="option6">
+                            <label class="form-check-label" for="display_check6">기타1</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" onchange="chk_display()" type="checkbox" id="display_check7"
+                                   checked value="option7">
+                            <label class="form-check-label" for="display_check7">기타2</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" onchange="chk_display()" type="checkbox" id="display_check8"
+                                   checked value="option8">
+                            <label class="form-check-label" for="display_check8">기타3</label>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <div class="row">
+
+                        <div class="col-6">
+                            <button class=" w-100 pt-2 btn "
+                                    style="height: 2.8em; font-size: 1.1em; background-color: #609ab6; color:white;"
+                                    onclick="search_member()">회 원 검 색
                             </button>
                         </div>
 
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="row ">
+                        <div class="col-6">
+                            <button class=" w-100 pt-2 btn "
+                                    style="height: 2.8em; font-size: 1.1em; background-color: #609ab6; color:white;"
+                                    onclick="register_event_member()">대상자 등록
 
-
-                        <div class="col-12 col-lg-12  ">
-                            <button class=" w-100 pt-2 btn " onclick="register_member()"
-                                    style="background-color: #417690; color:white; height: 3.5em;">회 원 등 록
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="row ">
-
-
-                    <div class="col-12 col-lg-12  ">
-                        <div id="member-table">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>행사연도</th>
-                                    <th>이름</th>
-                                    <th>설</th>
-                                    <th>보훈</th>
-                                    <th>추석</th>
-                                    <th>위문품(기타1)</th>
-                                    <th>위문품(기타2)</th>
-                                    <th>위문품(기타3)</th>
-                                    <th>전적지</th>
-                                    <th>체련</th>
-                                    <th>수정</th>
-                                </tr>
-                                </thead>
-                                <tbody id="member-body">
-
-                                </tbody>
-                            </table>
                         </div>
 
                     </div>
 
+
+                    <div class="container" style="height: 1em;"></div>
+
+
+                    <div class="col-12">
+                        <div class="row ">
+
+                            <div class="col-12 ">
+                                <div id="member-table" style="margin-bottom: 5em;">
+                                    <table class="table table-hover table-bordered text-center table align-middle "
+                                           style="table-layout:fixed;">
+                                        <thead class="bg-light text-dark">
+                                        <tr class="align-middle">
+                                            <th style="width: 3%;">#</th>
+                                            <th style="width: 5%;">행사연도</th>
+                                            <th style="width: 6%;">I D</th>
+                                            <th style="width: 10%;">이름</th>
+                                            <th style="width: 10%;">단체명</th>
+                                            <th class="dispaly_chk1 display_all" style="width: 5%;">설</th>
+                                            <th class="dispaly_chk2 display_all" style="width: 5%;">보훈</th>
+                                            <th class="dispaly_chk3 display_all" style="width: 5%;">추석</th>
+                                            <th class="dispaly_chk4 display_all" style="width: 5%;">전적지</th>
+                                            <th class="dispaly_chk5 display_all" style="width: 5%;">체련</th>
+                                            <th class="dispaly_chk6 display_all" style="width: 5%;">(기타1)</th>
+                                            <th class="dispaly_chk7 display_all" style="width: 5%;">(기타2)</th>
+                                            <th class="dispaly_chk8 display_all" style="width: 5%;">(기타3)</th>
+                                            <th>메 모</th>
+                                            <th style="width: 5%;  ">삭 제</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="member-body">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
+
+
             </div>
+            <script>
 
-        </div>
-    </div>
-    <script>
-        function search_member() {
-
-            var data = {}
-            var ck_list = []
-            var ck_participant = []
-            data['event_date'] = $("#id_event_date").val()
-            data['member_name'] = $("#id_member_name").val()
-
-            $('input.ck-group:checked').each(function () {
-                ck_list.push($(this).next().text());
-            })
-            $('input.ck-participant:checked').each(function () {
-                ck_participant.push($(this).next().text());
-            })
-
-            data['ck_group'] = ck_list;
-            data['ck_participant'] = ck_participant;
-
-            $("#member-body").empty();
-            $.ajax({
-                url: '{% url 'mainapp:ajax_search_group_event' %}',
-                data: data,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.status == 'success') {
+                function register_event_member() {
+                    var option = "width=800 ,height=1000, top=100, left=200, location = no, scrollbars = yes"
+                    window.open('{% url 'mainapp:event_sel_mem' %}', "event_register", option);
+                }
 
 
-                        console.log(data.data);
-                        var obj = data.data;
-                        let bodys = "";
-                        for (var i = 0; i < obj.length; i++) {
-                            var f = obj[i];
-                            console.log(f.sul);
-                            if (f.sul === true) {
-                                var ck_sul = "<input class='form-check-input' id='sul-" + f.id + "'  type='checkbox' checked/>"
-                                var ck_bohoon = "<input class='form-check-input' id='bohoon-" + f.id + "'  type='checkbox' checked/>"
-                                var ck_choosuk = "<input class='form-check-input' id='choosuk-" + f.id + "'  type='checkbox' checked/>"
-                                var ck_etc1 = "<input class='form-check-input' id='etc1-" + f.id + "'  type='checkbox' checked/>"
-                                var ck_etc2 = "<input class='form-check-input' id='etc2-" + f.id + "'  type='checkbox' checked/>"
-                                var ck_etc3 = "<input class='form-check-input' id='etc3-" + f.id + "'  type='checkbox' checked/>"
-                                var ck_junjukji = "<input class='form-check-input' id='junjukji-" + f.id + "'  type='checkbox' checked/>"
-                                var ck_charun = "<input class='form-check-input' id='charun-" + f.id + "'  type='checkbox' checked/>"
+                function search_member() {
 
-                            } else {
-                                var ck_sul = "<input class='form-check-input' id='sul-" + f.id + "'  type='checkbox' />"
-                                var ck_bohoon = "<input class='form-check-input' id='bohoon-" + f.id + "'  type='checkbox' />"
-                                var ck_choosuk = "<input class='form-check-input' id='choosuk-" + f.id + "'  type='checkbox' />"
-                                var ck_etc1 = "<input class='form-check-input' id='etc1-" + f.id + "'  type='checkbox' />"
-                                var ck_etc2 = "<input class='form-check-input' id='etc2-" + f.id + "'  type='checkbox' />"
-                                var ck_etc3 = "<input class='form-check-input' id='etc3-" + f.id + "'  type='checkbox' />"
-                                var ck_junjukji = "<input class='form-check-input' id='junjukji-" + f.id + "'  type='checkbox' />"
-                                var ck_charun = "<input class='form-check-input' id='charun-" + f.id + "'  type='checkbox' />"
-                            }
+                    var data = {}
+                    var ck_list = []
+                    var ck_participant = []
+                    data['event_date'] = $("#id_event_date").val()
+                    data['member_name'] = $("#id_member_name").val()
+
+                    $('input.ck-group:checked').each(function () {
+                        ck_list.push($(this).next().text());
+                    })
+                    $('input.ck-participant:checked').each(function () {
+                        ck_participant.push($(this).next().text());
+                    })
+
+                    data['ck_group'] = ck_list;
+                    data['ck_participant'] = ck_participant;
+
+                    $("#member-body").empty();
+                    $.ajax({
+                        url: '{% url 'mainapp:ajax_search_group_event' %}',
+                        data: data,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.status == 'success') {
 
 
-                            bodys += `<tr>
+                                console.log(data.data);
+                                var obj = data.data;
+                                let bodys = "";
+                                var s = "";
+                                for (var i = 0; i < obj.length; i++) {
+                                    var f = obj[i];
+                                    console.log(f.sul);
+
+                                    if (f.sul) {
+                                        s = "checked='on'";
+                                    } else {
+                                        s = "";
+                                    }
+                                    var ck_sul = "<input class=' form-check-input' id='sul-" + f.id + "'  type='checkbox'" + s + " disabled='disabled'  >"
+
+                                    if (f.bohoon) {
+                                        s = "checked='on'";
+                                    } else {
+                                        s = "";
+                                    }
+                                    var ck_bohoon = "<input class='  form-check-input' id='bohoon-" + f.id + "'  type='checkbox'" + s + "disabled='disabled'  >"
+
+                                    if (f.choosuk) {
+                                        s = "checked='on'";
+                                    } else {
+                                        s = "";
+                                    }
+                                    var ck_choosuk = "<input class='  form-check-input' id='choosuk-" + f.id + "'  type='checkbox'" + s + "disabled='disabled'  >"
+
+                                    if (f.junjukji) {
+                                        s = "checked='on'";
+                                    } else {
+                                        s = "";
+                                    }
+                                    var ck_junjukji = "<input class=' form-check-input' id='junjukji-" + f.id + "'  type='checkbox'" + s + "disabled='disabled'  >"
+
+                                    if (f.charun) {
+                                        s = "checked='on'";
+                                    } else {
+                                        s = "";
+                                    }
+                                    var ck_charun = "<input class=' form-check-input' id='charun-" + f.id + "'  type='checkbox'" + s + "disabled='disabled'  >"
+
+                                    if (f.etc1) {
+                                        s = "checked='on'";
+                                    } else {
+                                        s = "";
+                                    }
+                                    var ck_etc1 = "<input class='  form-check-input' id='etc1-" + f.id + "'  type='checkbox'" + s + "disabled='disabled'  >"
+
+                                    if (f.etc2) {
+                                        s = "checked='on'";
+                                    } else {
+                                        s = "";
+                                    }
+                                    var ck_etc2 = "<input class='l form-check-input' id='etc2-" + f.id + "'  type='checkbox'" + s + "disabled='disabled'  >"
+
+                                    if (f.etc3) {
+                                        s = "checked='on'";
+                                    } else {
+                                        s = "";
+                                    }
+                                    var ck_etc3 = "<input class=' form-check-input' id='etc3-" + f.id + "'  type='checkbox'" + s + "disabled='disabled'  >"
+
+                                    var ck_explain = "<input class='form-control form-control-lg' onblur='modify_group_event(\"" + f.id + "\")' id='explain-" + f.id + "'  type='textarea' value=" + f.explain + "  >"
+
+                                    bodys += `<tr>
+                                    <td >${i + 1}</td>
                                     <td id='event_created_date-${f.id}'>${f.event_created_date}</td>
+                                    <td >${f.member.id}</td>
                                     <td id='member_name-${f.id}'>${f.member.name}</td>
-                                    <td>${ck_sul}</td>
-                                    <td >${ck_bohoon}</td>
-                                    <td>${ck_choosuk}</td>
-                                    <td >${ck_etc1}</td>
-                                    <td >${ck_etc2}</td>
-                                    <td >${ck_etc3}</td>
-                                    <td >${ck_junjukji}</td>
-                                    <td >${ck_charun}</td>
-                                    <td><button onclick="modify_group_event('${f.id}')" class="btn-primary btn">수정</button></td>
+                                    <td >${f.member.group_type.name}</td>
+                                    <td  onclick="click_td('sul-','${f.id}')"      style="cursor:pointer;" >${ck_sul}</td>
+                                    <td  onclick="click_td('bohoon-','${f.id}')"      style="cursor:pointer;" >${ck_bohoon}</td>
+                                    <td  onclick="click_td('choosuk-','${f.id}')"      style="cursor:pointer;" >${ck_choosuk}</td>
+                                    <td  onclick="click_td('junjukji-','${f.id}')"      style="cursor:pointer;" >${ck_junjukji}</td>
+                                    <td  onclick="click_td('charun-','${f.id}')"      style="cursor:pointer;" >${ck_charun}</td>
+                                    <td  onclick="click_td('etc1-','${f.id}')"      style="cursor:pointer;" >${ck_etc1}</td>
+                                    <td  onclick="click_td('etc2-','${f.id}')"      style="cursor:pointer;" >${ck_etc2}</td>
+                                    <td  onclick="click_td('etc3-','${f.id}')"      style="cursor:pointer;" >${ck_etc3}</td>
+                                    <td  style="cursor:pointer;" >${ck_explain}</td>
+                                    <td><button onclick="del_group_event(${f.id})" class="btn-danger btn" data-bs-toggle="modal" data-bs-target="#alert_member_update"  >삭제</button></td>
                                     </tr>`;
+                                }
+                                $("#member-body").append(bodys);
+
+                            }
+                        },
+
+                    });
+                }
+
+
+                function chk_display() {
+
+                    if (document.getElementById('display_check1').checked) {
+                        $(".dispaly_chk1").css("width", "5%");
+                    } else {
+                        $(".dispaly_chk1").css("width", "0%");
+                    }
+
+                    if (document.getElementById('display_check2').checked) {
+                        $(".dispaly_chk2").css("width", "5%");
+                    } else {
+                        $(".dispaly_chk2").css("width", "0%");
+                    }
+
+                    if (document.getElementById('display_check3').checked) {
+                        $(".dispaly_chk3").css("width", "5%");
+                    } else {
+                        $(".dispaly_chk3").css("width", "0%");
+                    }
+
+                    if (document.getElementById('display_check4').checked) {
+                        $(".dispaly_chk4").css("width", "5%");
+                    } else {
+                        $(".dispaly_chk4").css("width", "0%");
+                    }
+
+                    if (document.getElementById('display_check5').checked) {
+                        $(".dispaly_chk5").css("width", "5%");
+                    } else {
+                        $(".dispaly_chk5").css("width", "0%");
+                    }
+
+                    if (document.getElementById('display_check6').checked) {
+                        $(".dispaly_chk6").css("width", "5%");
+                    } else {
+                        $(".dispaly_chk6").css("width", "0%");
+                    }
+
+                    if (document.getElementById('display_check7').checked) {
+                        $(".dispaly_chk7").css("width", "5%");
+                    } else {
+                        $(".dispaly_chk7").css("width", "0%");
+                    }
+
+                    if (document.getElementById('display_check8').checked) {
+                        $(".dispaly_chk8").css("width", "5%");
+                    } else {
+                        $(".dispaly_chk8").css("width", "0%");
+                    }
+
+
+                }
+
+                function click_td(name, id) {
+
+                    if (document.getElementById(name + id).checked) {
+
+                        document.getElementById(name + id).checked = false;
+
+
+                    } else {
+                        document.getElementById(name + id).checked = true;
+
+                    }
+
+                    modify_group_event(id)
+
+
+                }
+
+
+                function modify_group_event(gid) {
+                    var data = {}
+                    data.gid = gid;
+                    data.ck_sul = $("#sul-" + gid).is(":checked") ? "True" : "False";
+                    data.ck_bohoon = $("#bohoon-" + gid).is(":checked") ? "True" : "False";
+                    data.ck_choosuk = $("#choosuk-" + gid).is(":checked") ? "True" : "False";
+                    data.ck_etc1 = $("#etc1-" + gid).is(":checked") ? "True" : "False";
+                    data.ck_etc2 = $("#etc2-" + gid).is(":checked") ? "True" : "False";
+                    data.ck_etc3 = $("#etc3-" + gid).is(":checked") ? "True" : "False";
+                    data.ck_junjukji = $("#junjukji-" + gid).is(":checked") ? "True" : "False";
+                    data.ck_charun = $("#charun-" + gid).is(":checked") ? "True" : "False";
+                    data.ck_explain = $("#explain-" + gid).val();
+                    data.csrfmiddlewaretoken = '{{ csrf_token }}'
+
+                    $.ajax({
+                        url: '{% url 'mainapp:ajax_modify_event' %}',
+                        data: data,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.status == 'success') {
+
+
+                            }
+                        },
+
+                    });
+
+
+                }
+
+
+                function register_member() {
+                    var option = "width = 800, height = 800, top = 100, left = 200, location = no, scrollbars = yes"
+                    window.open('{% url 'mainapp:register_event' %}', "register", option);
+                }
+
+
+                $(document).ready(function () {
+                    var today = new Date();
+                    var yyyy = today.getFullYear();
+
+                    var options = "";
+                    for (var i = 0; i < 10; i++) {
+
+                        var d = yyyy - i;
+                        options += "<option value='" + d + "'>" + d + "</option>"
+                        if (i == 0) {
+                            options += "<option value=''>모든년도</option>"
                         }
-                        $("#member-body").append(bodys);
-
                     }
-                },
 
-            });
-        }
 
-        function click_tr(id) {
-            var url_mask = "{% url 'mainapp:member_detail' pk=12345 %}".replace(/12345/, id.toString());
-            location.href = url_mask;
-        }
+                    $("#id_event_date").append(options)
+                });
 
-        function modify_group_event(gid) {
-            var data = {}
-            data.gid = gid;
-            data.ck_sul = $("#sul-" + gid).is(":checked") ? "True" : "False";
-            data.ck_bohoon = $("#bohoon-" + gid).is(":checked") ? "True" : "False";
-            data.ck_choosuk = $("#choosuk-" + gid).is(":checked") ? "True" : "False";
-            data.ck_etc1 = $("#etc1-" + gid).is(":checked") ? "True" : "False";
-            data.ck_etc2 = $("#etc2-" + gid).is(":checked") ? "True" : "False";
-            data.ck_etc3 = $("#etc3-" + gid).is(":checked") ? "True" : "False";
-            data.ck_junjukji = $("#junjukji-" + gid).is(":checked") ? "True" : "False";
-            data.ck_charun = $("#charun-" + gid).is(":checked") ? "True" : "False";
-            data.csrfmiddlewaretoken = '{{ csrf_token }}'
 
-            $.ajax({
-                url: '{% url 'mainapp:ajax_modify_event' %}',
-                data: data,
-                type: 'POST',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.status == 'success') {
-
-                        alert("수정 완료")
+                function del_group_event(gid) {
+                    if (confirm("삭제하시겠습니까??") == false) {
+                        return;
                     }
-                },
 
-            });
-        }
-          function register_member()
-        {
-            var option = "width = 800, height = 800, top = 100, left = 200, location = no, scrollbars = yes"
-            window.open('{% url 'mainapp:register_event' %}', "register", option);
-        }
-    </script>
+                    var data = {}
+                    data.gid = gid;
+                    data.csrfmiddlewaretoken = '{{ csrf_token }}'
+
+                    $.ajax({
+                        url: '{% url 'mainapp:ajax_del_event' %}',
+                        data: data,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.status == 'success') {
+
+                                search_member();
+
+                            }
+                        },
+
+                    });
+
+
+                }
+
+
+            </script>
 {% endblock %}

@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<body>
+    <style>
+    
+        body {
+            font-size: 15pt;
+        }
+    
+        
+       button {
+    
+           height: 2.8em !important ;
+           font-size: 1em !important ; 
+       }
+    
+    
+    </style>
+
+
+<div class="container py-2">
+<h1> 회 원 등 록 </h1>
+<div style=" height: 1em;"></div>
+<!-- Main component for a primary marketing message or call to action -->
+
+<form action="" method="post">
+    {% csrf_token %}
+     <input name="pk" type="hidden" value="{{ member.id }}" />    
+
+
+
+<div class="row m-auto px-4">
+
+    <div class="col-12">
+        <div class=" mb-1 ">대상구분
+            {{ form.group_type }}
+        </div>
+    </div>
+
+
+
+    <div class="col-6">
+        <div class=" mb-1 ">
+            이름
+          
+            {{ form.name }}
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class=" mb-1 ">
+            생년월일
+            {{ form.birth_date }}
+        </div>
+    </div>
+
+   
+
+
+    <div class="col-6">
+        <div class=" mb-3 ">
+            핸드폰번호
+            {{ form.mobile }}
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class=" mb-3 ">
+            전화번호
+            {{ form.tel }}
+        </div>
+    </div>
+
+    <div class="col-9">
+        <div class=" mb-3 ">
+            주소
+            {{ form.address }}
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class=" mb-3 ">
+            우편번호
+            {{ form.postal }}
+        </div>
+    </div>
+
+   
+
+    <div class="col-6">
+        <div class=" mb-3 ">
+            보훈번호
+            {{ form.bohoon_num }}
+        </div>
+    </div>
+    
+    <div class="col-6">
+        <div class=" mb-3 ">
+            전입일자
+            {{ form.import_date }}
+        </div>
+    </div>
+
+
+    <div class="col-6">
+        <div class=" mb-3 ">
+            수권자
+            {{ form.yoo_gong_ja_name }}
+        </div>
+    </div>
+    
+    <div class="col-6">
+        <div class=" mb-3 ">
+            관계
+            {{ form.yoo_gong_ja_rel }}
+        </div>
+    </div>
+    
+   
+
+    <div class="col-12">
+        <div class=" mb-3 ">
+            메모
+            {{ form.memo }}
+        </div>
+    </div>
+   
+    <div style=" height: 1em;"></div>
+
+
+    <div class="col-12 "> 
+          <button type="submit" class="btn btn-primary w-100 " 
+          style = "height: 2.8em; font-size: 1.2em; background-color: #609ab6; color:white;">회원 등록</button>
+    </div>
+    
+    {% if form.errors %}
+        <p class ="text-center" style="color:red; ">올바르지 않은 항목이 있습니다. 다시 시도해주세요.</p>
+        {% endif %}
+        
+
+
+</div>
+
+
+
+</form>
+
+</div> 
+
+
+
+
+
+
+<select id="option_val" style="display:none;" >
+
+    {% for g in staff.staff_group_type.all %}
+
+    <option value="{{ g.id }}">{{g.full_name}}</option>
+    
+    {% endfor %}
+        
+
+</select>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+<script>
+
+ $(document).ready(function() {
+ 
+    $('#id_group_type').empty();
+    var a = document.getElementById('option_val').length;
+   // var target = document.getElementById('option_val');
+
+
+    for(var count = 0; count < a ; count++){                
+                var option = $("<option value ="+
+                document.getElementById('option_val').options[count].value
+                +" >"+
+                    document.getElementById('option_val').options[count].text
+                    +"</option>");
+                $('#id_group_type').append(option);
+            }
+ 
+            
+
+           
+
+}); 
+
+
+</script>
+
+

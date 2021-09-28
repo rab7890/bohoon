@@ -1,5 +1,7 @@
 """bohoon URL Configuration
 
+
+
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
@@ -15,8 +17,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
+from mainapp import views
+from mainapp.forms import AuthForm
 
 urlpatterns = [
+
+    path('login', auth_views.LoginView.as_view(authentication_form=AuthForm,template_name='mainapp/member_login.html',), name="login"),
+    path('logout', auth_views.LogoutView.as_view(), name="logout"),
+    
+    
     path('admin/', admin.site.urls),
-    path('main/', include('mainapp.urls'))
+    path('main/', include('mainapp.urls')),
+    path('', views.member_mgr_view, name='member'),
 ]

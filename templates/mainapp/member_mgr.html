@@ -1,4 +1,20 @@
 {% extends 'base.html' %}
+
+{% block title %}
+마포보훈회관 / 회원관리
+{% endblock %} 
+
+{% block menu_title %}
+회원관리
+{% endblock %}
+
+{% block menu1 %}
+active
+{% endblock %}
+
+
+
+
 {% block content %}
 
 
@@ -8,7 +24,7 @@
 
             <div class="col-12" style="  padding:0em; ">
 
-                <div style="height: 3em; width: 95%; overflow-y: scroll; padding-left: 1.5em ; " class="text-nowrap ">
+                <div style="height: 3em; width: 95%;  padding-left: 0.6em ; font-size: 1.1em; word-break:keep-all; " >
                     단체 이름 &nbsp;&nbsp;
                     <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
                     {% for g in staff.staff_group_type.all %}
@@ -28,69 +44,85 @@
 
                 <div class="row">
 
-                    <div class="col-12 col-lg-12">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="id_address">
-                            <label for="floatingInput">주소 및 기타 검색</label>
-                        </div>
-                    </div>
+                <div class="col-lg-12">
 
+                <div class="input-group input-group-lg">
+                        <span class="input-group-text" >  주 소  및  메 모</span>
+                        <input onkeyup="enter_key()" type="text" class="form-control" id="id_address" placeholder="주소 검색">
+                        <input onkeyup="enter_key()" type="text" class="form-control" id="id_memo" placeholder="메모 검색">
+                </div>
 
-                    <div class="col-lg-12">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="id_mobile">
-                            <label for="floatingInput">전화번호</label>
-                        </div>
-                    </div>
+                <div class="container" style="height: 1em;"></div>
 
-                    <div class="col-lg-12">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="id_member_name">
-                            <label for="floatingInput">회원이름</label>
-                        </div>
-                    </div>
+                <div class="input-group input-group-lg">
+                        <span class="input-group-text" >   전  화  번  호  </span>
+                        <input onkeyup="enter_key()" type="text" class="form-control" id="id_mobile">
+                </div>
+
+                <div class="container" style="height: 1em;"></div>
+
+                <div class="input-group input-group-lg">
+                        <span class="input-group-text" >  회  원  이  름  </span>
+                        <input onkeyup="enter_key()" type="text" class="form-control" id="id_member_name">
+                </div>
 
                 </div>
+                
             </div>
+
+     
+     
+            <div class="container" style="height: 1em;"></div>
+
+       
+     
+     
+     
+     <div class="col-12">
 
             <div class="row">
+              
                 <div class="col-6">
-                    <div class="row ">
-
-
-                        <div class="col-12 col-lg-12  ">
-                            <button class=" w-100 pt-2 btn " onclick="search_member()"
-                                    style="background-color: #417690; color:white; height: 3.5em;">회 원 검 색
-                            </button>
-                        </div>
-
-                    </div>
+                    <button class=" w-100 pt-2 btn "
+                    style = "height: 2.8em; font-size: 1.1em; background-color: #609ab6; color:white;"   onclick="search_member()">회 원 검 색
+                    </button>
                 </div>
-                <div class="col-6">
-                    <div class="row ">
 
-
-                        <div class="col-12 col-lg-12  ">
-                            <button class=" w-100 pt-2 btn " onclick="register_member()"
-                                    style="background-color: #417690; color:white; height: 3.5em;">회 원 등 록
+                <div class="col-4">
+                            <button class=" w-100 pt-2 btn "
+                            style = "height: 2.8em; font-size: 1.1em; background-color: #609ab6; color:white;" onclick="register_member()">회 원 등 록
                             </button>
-                        </div>
-
-                    </div>
                 </div>
-            </div>
+
+                <div class="col-2">
+                            <a class=" w-100 pt-2 btn "
+                            style = "height: 2.8em; font-size: 1.1em; background-color: #609ab6; color:white;" href="{% url 'mainapp:member_save_excel' %}" >XLS 저장
+                            </a>
+                </div>
+
+        </div>
+
+
+            <div class="container" style="height: 1em;"></div>
+
             <div class="col-12">
                 <div class="row ">
 
 
-                    <div class="col-12 col-lg-12  ">
-                        <div id="member-table">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>이름</th>
-                                    <th>생년월일</th>
-                                    <th>핸드폰</th>
+                    <div class="col-12 ">
+                        <div id="member-table" style="margin-bottom: 5em; ">
+                            <table class="table table-hover table-bordered text-center table align-middle " style="table-layout:fixed;" >
+                                <thead class="bg-light text-dark">
+                                    <tr  class="align-middle" >
+                                    <th style="width: 3%;" >#</th>
+                                    <th style="width: 6%;" >I D</th>
+                                    <th style="width: 10%;" >이름</th>
+                                    <th style="width: 10%;" >생년월일</th>
+                                    <th style="width: 10%;" >단 체 명</th>
+                                    <th style="width: 12%;" >전화번호</th>
+                                    <th >주   소</th>
+                                    <th style="width: 15%;" >메   모</th>
+                                    
                                 </tr>
                                 </thead>
                                 <tbody id="member-body">
@@ -114,7 +146,8 @@
             data['address'] = $("#id_address").val()
             data['mobile'] = $("#id_mobile").val()
             data['member_name'] = $("#id_member_name").val()
-
+            data['memo'] = $("#id_memo").val()
+            
             $('input.form-check-input:checked').each(function () {
                 ck_list.push($(this).next().text());
             })
@@ -122,30 +155,54 @@
 
             $("#member-body").empty();
             $.ajax({
-                url: '{% url 'mainapp:ajax_search_member' %}',
+                url: '{% url 'mainapp:ajax_search_member' %}' ,
                 data: data,
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
                     if (data.status == 'success') {
 
-                        const obj = JSON.parse(data.data);
+                        console.log(data);
+                        var obj = data.data
                         let bodys = "";
-                        console.log(obj);
                         for (var i = 0; i < obj.length; i++) {
-                            var name = obj[i].fields.name;
-                            var birth_date = obj[i].fields.birth_date;
-                            var mobile = obj[i].fields.mobile;
-                            var id = obj[i].pk;
-                            bodys += `<tr onclick="click_tr('${id}')"> <td>${name}</td> <td>${birth_date}</td>
-                                    <td>${mobile}</td></tr>`;
+                            var id =   obj[i].id; 
+                            var name = obj[i].name;
+                            var birth_date = obj[i].birth_date;
+                            var group_type = obj[i].group_type.name;
+                            var mobile = obj[i].mobile;
+                            var tel = obj[i].tel;
+                            var address = obj[i].address;
+                            var memo = obj[i].memo;
+                            
+                           
+                           
+                            bodys += `<tr onclick="click_tr('${id}')" style="height: 3.8em; ">
+                             <td class="fw-bold"  style="width: 3%;">${i+1}</td>
+                             <td style="width: 10%;" >${id}</td>
+                             <td style="width: 10%;" >${name}</td>
+                             <td style="width: 10%;">${birth_date}</td>
+                             <td style="width: 10%;" >${group_type}</td>
+                             <td style="width: 12%;">${mobile}<br>${tel}</td>
+                             <td >${address}</td> <td class ="ellip " style="width: 15%;" >${memo}</td>
+                             </tr>`;
                         }
                         $("#member-body").append(bodys);
-
+                        
+                       // $("#id_address").val("") 다시 빈칸 만들기
+                       // $("#id_mobile").val("")
+                       // $("#id_member_name").val("")
+                       // $("#id_memo").val("")
                     }
                 },
 
+           
+
             });
+        
+          
+          
+             
         }
 
         function click_tr(id) {
@@ -154,8 +211,13 @@
         }
 
         function register_member() {
-            var option = "width = 500, height = 500, top = 100, left = 200, location = no, scrollbars = yes"
+            var option = "width=500 ,height=900, top=100, left=200, location = no, scrollbars = yes"
             window.open('{% url 'mainapp:member_register' %}', "register", option);
         }
+
+     
+       
+   
+
     </script>
 {% endblock %}

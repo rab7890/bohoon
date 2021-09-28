@@ -22,12 +22,15 @@ class Member(models.Model):
     postal = models.CharField(max_length=10, null=True, blank=True)
     bohoon_num = models.CharField(max_length=15, null=True, blank=True)
     yoo_gong_ja_name = models.CharField(max_length=10, null=True, blank=True)
+    yoo_gong_ja_rel = models.CharField(max_length=10, null=True, blank=True)
     import_date = models.DateField(null=True, blank=True)
     export_date = models.DateField(null=True, blank=True)
+    pre_deleted = models.BooleanField(null=True, blank=True)
     is_deleted = models.BooleanField(null=True, blank=True)
     deleted_date = models.DateField(null=True, blank=True)
     created_date = models.DateField(auto_now_add=True)
     modified_date = models.DateField(auto_now=True)
+    memo = models.TextField(null=True, blank=True)
     group_type = models.ForeignKey('GroupType', null=True, blank=True, on_delete=models.SET_NULL,
                                    related_name='group_type_member')
     program = models.ManyToManyField('Program', through='RelMemberProgram', blank=True,
@@ -35,7 +38,7 @@ class Member(models.Model):
 
     class Meta:
         db_table = 'member'
-
+        ordering = ['group_type','name']
 
 
 class GroupType(models.Model):
@@ -45,10 +48,10 @@ class GroupType(models.Model):
                                         related_name='staff_group_type')
 
     def __str__(self):
-        return self.name
-
+        return self.full_name
     class Meta:
         db_table = 'group_type'
+        ordering = ['pk']
 
 
 class RelStaffGroupType(models.Model):
@@ -115,10 +118,11 @@ class GroupEvent(models.Model):
     etc1 = models.BooleanField(null=True, blank=True)
     etc2 = models.BooleanField(null=True, blank=True)
     etc3 = models.BooleanField(null=True, blank=True)
-    explain = models.TextField(null=True, blank=True)
+    explain = models.TextField(null=True, blank=True, default="")
     member = models.ForeignKey('Member', null=True, blank=True, on_delete=models.SET_NULL,
                               related_name='member_group_event')
 
 
     class Meta:
         db_table = 'group_event'
+        ordering = ['-event_created_date','member']

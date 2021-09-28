@@ -1,27 +1,51 @@
 {% extends 'base.html' %}
+
+{% block title %}
+마포보훈회관
+{% endblock %} 
+
+{% block menu_title %}
+로그인
+{% endblock %}
+
+
+
 {% block content %}
-<main class="form-signin">
-  <form method="post" action="{% url 'mainapp:login' %}">
+
+
+
+<div class="container" style="height: 4em;"></div>
+
+<div class="container px-5" >
+
+   <main class="form-signin px-5 ">
+  <form method="post" action="">
       {% csrf_token %}
-    <img class="mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+   
+    <h1 class="h3 mb-3 fw-normal">로그인 하여 주세요 !</h1>
+    <div class="container" style="height: 0.5em;"></div>
 
-    <div class="form-floating">
-      <input type="text" class="form-control" id="floatingInput" name="uid">
-      <label for="floatingInput">ID</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" name="password">
-      <label for="floatingPassword">Password</label>
-    </div>
+   
+    {{ form.username }}
+    <div class="container" style="height: 1em;"></div>
 
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
+    
+    {{ form.password }}
+    <div class="container" style="height: 1.5em;"></div>
+          
+    <button class="w-100 pt-2 btn"
+    style = "height: 2.8em; font-size: 1em; background-color: #609ab6; color:white;"  type="submit">로그인</button>
+    <div class="container" style="height: 0.5em;"></div>
+    {% if form.errors %}
+    <p class ="text-center" style="color:red; ">아이디, 비밀번호가 일치하지 않습니다. 다시 시도해주세요.</p>
+    {% endif %}
+    
   </form>
 </main>
+
+</div>
+</div>
+
+
+
 {% endblock %}

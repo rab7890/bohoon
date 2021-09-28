@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-huc7fdll+(zeg)z#5^w%(@*bz*vh-nnkde5(oy0p@_1#x*^xmb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,8 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mainapp'
-]
+    'rest_framework',
+    'mainapp',
+    ]
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -78,7 +82,7 @@ WSGI_APPLICATION = 'bohoon.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bohoon',
+        'NAME': 'test',
         'USER': 'postgres',
         'PASSWORD': 'admin@123',
         'HOST': 'mapobohun.iptime.org',
@@ -104,6 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_REDIRECT_URL = '/main/member'
+LOGOUT_REDIRECT_URL = 'login'
 
 
 # Internationalization

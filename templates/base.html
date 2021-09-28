@@ -1,89 +1,85 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
+
+    <title>{% block title %}{% endblock %}</title>
+
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
             crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<body>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+            
+
+
+
+
 <style>
-    .container {
-        width: 100%;
+   /* 
+    body::-webkit-scrollbar {
+        display: none; 
     }
+    */
 
     body {
-        font-size: 15pt;
-    }
-</style>
-<style>
-    div::-webkit-scrollbar {
-        display: none !important;
+        font-size: 1.1em;
+        overflow-y:scroll; 
+       
     }
 
-    .ellip2 {
+    
+   
+    td {
+
+        padding: 0.1em !important ;
+        display: table-cell;
         overflow: hidden;
         text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
+        white-space: nowrap;
+    
     }
 
-    .ellip1 {
+    th {
+
+    padding: 0.1em !important ;
+    display: table-cell;
+    overflow: hidden;
+    height: 2.8em;
+    white-space: nowrap;
+
+}
+
+    .ellip {
+        display: table-cell;
         overflow: hidden;
         text-overflow: ellipsis;
-        wordwrap: white;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-    }
+             
+          } 
 
-    a:link {
-        color: black;
-        text-decoration: none;
-    }
-
-    a:visited {
-        color: black;
-        text-decoration: none;
-    }
-
-    a:hover {
-        color: black;
-        text-decoration: none;
-    }
-
-    .item_box:hover {
-
-        opacity: 1;
-
-    }
-
-    .item_box {
-
-        opacity: 0.7;
-
-    }
+          
 
 
 </style>
+</head>
+
+<body>
+
 
 <!-- Static navbar -->
 <nav class="navbar fixed-top navbar-expand-lg navbar-expand-md  navbar-dark fixed-top "
      style=" background-color:#417690; padding-left:1em; ">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
 
-            회원 관리
-        </a>
+        <a class="navbar-brand" href="#">{% block menu_title %}{% endblock %}</a>
+
         <button class="navbar-toggler " type="button" style="background-color: #417690; " data-bs-toggle="collapse"
                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -92,28 +88,28 @@
         <div class=" collapse navbar-collapse justify-content-end  " style="background-color: #417690; padding: 0em; "
              id="navbarNav">
             <ul class="navbar-nav ">
+                {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'mainapp:member' %}">| 회원관리 |</a>
+                    <a class="nav-link {% block menu1 %}{% endblock %} " href="{% url 'mainapp:member' %}">| 회원관리 |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/counsel">| 상담관리 |</a>
+                    <a class="nav-link {% block menu2 %}{% endblock %}  " href="#">| 상담관리 |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/program">| 프로그램 |</a>
+                    <a class="nav-link {% block menu3 %}{% endblock %} " href="#">| 프로그램 |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'mainapp:event' %}">| 행사관리 |</a>
+                    <a class="nav-link {% block menu4 %}{% endblock %} " href="{% url 'mainapp:event' %}">| 행사관리 |</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin">| 관리자 |</a>
-                </li>
+                {% endif %}
+           
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mainapp:logout' %}">| 로그아웃 |</a>
+                        <a class="nav-link" href="{% url 'logout' %}">| 로그아웃 |</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mainapp:login' %}">| 로그인 |</a>
+                        <a class="nav-link" href="{% url 'login' %}">| 로그인 |</a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
@@ -125,8 +121,10 @@
 </nav>
 <div style=" height: 4.2em;"></div>
 <!-- Main component for a primary marketing message or call to action -->
-{% block content %}
 
+<div class="mx-4 ">
+{% block content %}
+</div>
 {% endblock %}
 <style>
    .footer {
@@ -142,26 +140,16 @@
         <span style="color: white;">© 마포 보훈회관 회원관리 프로그램</span>
     </div>
 </footer>
-<script>
 
-    $(function ()
-    {
-         $("a.nav-link").each(function ()
-        {
-           $(this).removeClass('active');
-        })
-        $("a.nav-link").each(function ()
-        {
-            var h = $(this).prop('href');
-            console.log(h);
-            if (h.includes(location.pathname))
-            {
-                $(this).addClass('active')
-            }
-
-        })
-
-    })
-</script>
 </body>
 </html>
+
+<script>
+    function enter_key() {
+    
+    if(window.event.keyCode==13){
+        search_member();    
+        }
+    
+    }
+</script>

@@ -1,95 +1,177 @@
-<!DOCTYPE html>
-<html lang="kr">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-            crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<body>
-<style>
-    .container {
-        width: 100%;
-    }
+{% extends 'base.html' %}
 
-    body {
-        font-size: 15pt;
-    }
-</style>
-<style>
-    div::-webkit-scrollbar {
-        display: none !important;
-    }
+{% block title %}
+마포보훈회관 / 회원관리
+{% endblock %} 
 
-    .ellip2 {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-    }
+{% block menu_title %}
+회원관리 / 회원정보수정
+{% endblock %}
 
-    .ellip1 {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        wordwrap: white;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-    }
-
-    a:link {
-        color: black;
-        text-decoration: none;
-    }
-
-    a:visited {
-        color: black;
-        text-decoration: none;
-    }
-
-    a:hover {
-        color: black;
-        text-decoration: none;
-    }
-
-    .item_box:hover {
-
-        opacity: 1;
-
-    }
-
-    .item_box {
-
-        opacity: 0.7;
-
-    }
+{% block menu1 %}
+active
+{% endblock %}
 
 
-</style>
+{% block content %}
 
-<div style=" height: 4.2em;"></div>
-<!-- Main component for a primary marketing message or call to action -->
-<form action="" method="post">
-    {% csrf_token %}
-    {% for field in form %}
-        <div class="mb-3">
-            {{ field.errors }}
-            {{ field.label_tag }} {{ field }}
-            {% if field.help_text %}
-                <p class="help">{{ field.help_text|safe }}</p>
-            {% endif %}
+
+<div style=" height: 0.5em;"></div>
+
+       
+    
+     <div style=" height: 0.5em;"></div>
+
+    <form action="" method="post" id="frm" >
+        {% csrf_token %}
+         <input name="pk" type="hidden" value="{{ member.id }}" />    
+
+    
+    
+    <div class="row mx-1">
+        <h2>회원정보 </h2>
+        <div style=" height: 0.5em;"></div>
+
+        <div class="col-3">
+            <div class=" mb-1 ">
+                이름
+              
+                {{ form.name }}
+            </div>
         </div>
-    {% endfor %}
-    <input class="form-control" type="submit" value="수정">
+
+        <div class="col-3">
+            <div class=" mb-1 ">
+                생년월일
+                {{ form.birth_date }}
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class=" mb-1 ">대상구분
+                {{ form.group_type }}
+            </div>
+        </div>
+
+
+        <div class="col-3">
+            <div class=" mb-3 ">
+                핸드폰번호
+                {{ form.mobile }}
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class=" mb-3 ">
+                주소
+                {{ form.address }}
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class=" mb-3 ">
+                우편번호
+                {{ form.postal }}
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class=" mb-3 ">
+                전화번호
+                {{ form.tel }}
+            </div>
+        </div>
+
+       
+
+        <div class="col-3">
+            <div class=" mb-3 ">
+                보훈번호
+                {{ form.bohoon_num }}
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class=" mb-3 ">
+                수권자
+                {{ form.yoo_gong_ja_name }}
+            </div>
+        </div>
+        
+        <div class="col-3">
+            <div class=" mb-3 ">
+                관계
+                {{ form.yoo_gong_ja_rel }}
+            </div>
+        </div>
+        
+
+        <div class="col-3">
+            <div class=" mb-3 ">
+                전입일자
+                {{ form.import_date }}
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class=" mb-3 ">
+                메모
+                {{ form.memo }}
+            </div>
+        </div>
+       
+        <div class="col-3">
+            <div class=" mb-3 " stlye=" color:red; " >
+               삭제요청
+                {{ form.pre_deleted }}
+            </div>
+        </div>
+
+        <div style=" height: 1em;"></div>
+
+
+        <div class="col-12 "> 
+              <button class="btn btn-primary w-100 " onclick="update_confirm()"
+              style = "height: 2.8em; font-size: 1.2em; background-color: #609ab6; color:white;">회원 정보 수정</button>
+        </div>
+        
+        {% if form.errors %}
+            <p class ="text-center" style="color:red; ">올바르지 않은 항목이 있습니다. 다시 시도해주세요.</p>
+            {% endif %}
+            
+            
+
+    </div>
+
+
+  
+ 
+
+
+
 </form>
-</body>
-</html>
+    
+</div> 
+
+
+<script>
+    function update_confirm() {
+
+        if(confirm("회원정보를 수정하시겠습니다. ?")==false){
+                    return;}
+
+                    document.getElementByid('frm').submit();
+
+      }
+
+    
+
+
+
+
+</script>
+
+
+{% endblock  %}
+

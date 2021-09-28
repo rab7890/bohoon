@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+
+    <title>{% block title %}{% endblock %}</title>
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+
+    <style>
+        /*
+         body::-webkit-scrollbar {
+             display: none;
+         }
+         */
+
+        body {
+            font-size: 1em;
+            overflow-y: scroll;
+
+        }
+
+
+        td {
+
+            padding: 0.1em !important;
+            display: table-cell;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+        }
+
+        th {
+
+            padding: 0.1em !important;
+            display: table-cell;
+            overflow: hidden;
+            height: 2.8em;
+            white-space: nowrap;
+
+        }
+
+        .ellip {
+            display: table-cell;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+<div class="container py-2">
+    <h1> 행사 대상자 등록 </h1>
+    <div style=" height: 1em;"></div>
+
+
+    <div class="container-fluid">
+        <div class="row" style="  padding-top :0.2em;  ">
+
+
+            <div class="col-12" style="  padding:0em; ">
+
+                <div style="height: 3em; width: 95%;  padding-left: 0.6em ; font-size: 1.1em; word-break:keep-all; ">
+                    단체 이름 &nbsp;&nbsp;
+                    <!-- staff 객체에서 staff 과 m:n 관계에 있는 모델의 staff 을 가르키고 있는 field의 related name으로 조회 -->
+                    {% for g in staff.staff_group_type.all %}
+                        <div class="form-check form-check-inline">
+
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox{{ forloop.counter0 }}"
+                                   checked>
+                            <label class="form-check-label"
+                                   for="inlineCheckbox{{ forloop.counter0 }}">{{ g.name }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            <div class="col-12">
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">  지정할 년도</span>
+                            <select id="date_select" class="form-select">
+                            </select>
+                            <input onkeyup="enter_key()" type="text" class="form-control" id="id_memo"
+                                   placeholder="메모 검색">
+                        </div>
+
+                        <div class="container" style="height: 1em;"></div>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">   전  화  번  호  </span>
+                            <input onkeyup="enter_key()" type="text" class="form-control" id="id_mobile">
+                        </div>
+
+                        <div class="container" style="height: 1em;"></div>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">  회  원  이  름  </span>
+                            <input onkeyup="enter_key()" type="text" class="form-control" id="id_member_name">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="container" style="height: 1em;"></div>
+
+
+                <div class="col-12">
+
+                    <div class="row">
+
+                        <div class="col-6">
+                            <button class=" w-100 pt-2 btn "
+                                    style="height: 2.8em; font-size: 1.1em; background-color: #609ab6; color:white;"
+                                    onclick="search_member()">회 원 검 색
+                            </button>
+                        </div>
+
+                        <div class="col-6">
+                            <button class=" w-100 pt-2 btn "
+                                    style="height: 2.8em; font-size: 1.1em; background-color: #609ab6; color:white;"
+                                    onclick="add_group_event()">대상자 저장
+                            </button>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="container" style="height: 1em;"></div>
+
+                    <div class="col-12">
+                        <div class="row ">
+
+
+                            <div class="col-12 ">
+                                <div id="member-table" style="margin-bottom: 5em; ">
+                                    <table class="table table-hover table-bordered text-center table align-middle "
+                                           style="table-layout:fixed;">
+                                        <thead class="bg-light text-dark">
+                                        <tr class="align-middle">
+
+                                            <th style="width: 3%;">#</th>
+                                            <th style="width: 8%;">I D</th>
+                                            <th style="width: 10%;">이름</th>
+                                            <th style="width: 10%;">생년월일</th>
+                                            <th style="width: 10%;">단 체 명</th>
+                                            <th style="width: 0%;">메 모</th>
+                                            <th style="width: 15%;">선 택</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody id="member-body">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row" style=" position: fixed; left: 0; bottom: 0; width: 100%; background-color: white; ">
+
+
+                <div class="col-12 mb-4 ms-3 ">
+                    <button class=" w-100 pt-2 btn " onclick="add_group_event()"
+                            style="background-color: #609ab6; color:white; height: 3.5em;">대상자 저장
+                    </button>
+                </div>
+
+            </div>
+            <div class="row" style="">
+                <input id="id_file" type="file" value="파일">
+            </div>
+            <div class="row"  style="">
+                <button onclick="upload_excel()">upload excel</button>
+            </div>
+
+
+</body>
+</html>
+
+
+<script>
+    function search_member() {
+
+        var data = {}
+        var ck_list = []
+        data['member_name'] = $("#id_member_name").val()
+
+        $('input.form-check-input:checked').each(function () {
+            ck_list.push($(this).next().text());
+        })
+        data['checkbox'] = ck_list;
+
+        $("#member-body").empty();
+        $.ajax({
+            url: '{% url 'mainapp:ajax_search_member_sel' %}',
+            data: data,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 'success') {
+
+                    console.log(data);
+                    var obj = data.data;
+                    let bodys = "";
+                    console.log(obj);
+                    for (var i = 0; i < obj.length; i++) {
+
+                        var id = obj[i].id;
+                        var name = obj[i].name;
+                        var birth_date = obj[i].birth_date;
+                        var group_type = obj[i].group_type.name;
+                        var mobile = obj[i].mobile;
+                        var tel = obj[i].tel;
+                        var memo = obj[i].memo;
+
+
+                        bodys += `<tr onclick="click_tr('${id}')"  style="height:3em; "><td >${i + 1}</td> <td style="width: 8%;"  >${id}</td> <td style="width: 10%;" >${name}</td> <td style="width: 10%;">${birth_date}</td> <td style="width: 10%;" >${group_type}</td>
+                             <td style="width: 23%;">${memo}</td> <td style="width: 15%;" ><input class="form-check-input add-event" disabled="disabled" type="checkbox" id='${id}'>  </td></tr>`;
+
+
+                    }
+                    $("#member-body").append(bodys);
+
+                }
+            },
+
+        });
+    }
+
+    function upload_excel() {
+
+        var data = new FormData();
+        var f_obj = $("#id_file").get(0).files[0];
+        data.append("file", f_obj)
+        data.append("csrfmiddlewaretoken", '{{ csrf_token }}')
+        $.ajax({
+            url: '{% url 'mainapp:member_upload_excel' %}',
+            data: data,
+            type: 'POST',
+            dataType: 'json',
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.status == 'success') {
+
+                    console.log(data);
+                    var obj = data.data;
+                    let bodys = "";
+                    console.log(obj);
+                    for (var i = 0; i < obj.length; i++) {
+
+                        var id = obj[i].id;
+                        var name = obj[i].name;
+                        var birth_date = obj[i].birth_date;
+                        var group_type = obj[i].group_type.name;
+                        var mobile = obj[i].mobile;
+                        var tel = obj[i].tel;
+                        var memo = obj[i].memo;
+
+
+                        bodys += `<tr onclick="click_tr('${id}')"  style="height:3em; "><td >${i + 1}</td> <td style="width: 8%;"  >${id}</td> <td style="width: 10%;" >${name}</td> <td style="width: 10%;">${birth_date}</td> <td style="width: 10%;" >${group_type}</td>
+                             <td style="width: 23%;">${memo}</td> <td style="width: 15%;" ><input class="form-check-input add-event" disabled="disabled" type="checkbox" id='${id}'>  </td></tr>`;
+
+                    }
+                    $("#member-body").append(bodys);
+
+                }
+            },
+
+        });
+    }
+
+    function click_tr(id) {
+
+        if (document.getElementById(id).checked) {
+
+            document.getElementById(id).checked = false;
+
+
+        } else {
+            document.getElementById(id).checked = true;
+
+        }
+
+
+    }
+
+    function register_member() {
+        var option = "width=500 ,height=900, top=100, left=200, location = no, scrollbars = yes"
+        window.open('{% url 'mainapp:member_register' %}', "register", option);
+    }
+
+    $(document).ready(function () {
+        var today = new Date();
+        var yyyy = today.getFullYear();
+
+        var options = ""
+        for (var i = 0; i < 10; i++) {
+
+            var d = yyyy - i;
+            options += "<option value='" + d + "'>" + d + "</option>"
+        }
+
+        $("#date_select").append(options)
+    });
+
+
+    function add_group_event() {
+        var data = {}
+        var id_list = []
+
+        $("input.add-event:checked").each(function () {
+            id_list.push($(this).attr('id'))
+        })
+        console.log(id_list)
+        if (id_list.length === 0) {
+            return;
+        }
+        data.event_date = $("#date_select").val()
+        data.id_list = id_list
+        data.csrfmiddlewaretoken = '{{ csrf_token }}'
+        $.ajax({
+            url: '{% url 'mainapp:ajax_add_event' %}',
+            data: data,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 'success') {
+
+                    alert("대상자 저장 완료")
+                }
+            },
+
+        });
+
+        $("#member-body").empty();
+
+
+    }
+
+
+</script>
