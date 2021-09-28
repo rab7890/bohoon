@@ -1,5 +1,7 @@
 import tempfile
+from io import BytesIO
 
+import openpyxl
 import xlrd
 import xlwt
 from django.contrib.auth.decorators import login_required
@@ -282,7 +284,7 @@ def save_excel(request):
         response = HttpResponse(content_type='application/ms-excel')
 
         # decide file name
-        response['Content-Disposition'] = 'attachment; filename="ThePythonDjango.xls"'
+        response['Content-Disposition'] = 'attachment; filename="ThePythonDjango.xlsx"'
 
         # creating workbook
         wb = xlwt.Workbook(encoding='utf-8')
@@ -326,19 +328,15 @@ def save_excel(request):
 @csrf_protect
 def upload_excel(request):
     if request.method == "POST":
-        xlsfile = request.FILES.get('file', None)
-        """
-        tempfn = tempfile.TemporaryFile(prefix='contact-import')
-        with open(tempfn, 'wb+') as destination:
-            for chunk in xlsfile.chunks():
-                destination.write(chunk)
-        """
-        with tempfile.TemporaryFile() as f:
-            with open(f, 'wb+') as destination:
-                for chunk in xlsfile.chunks():
-                    destination.write(chunk)
-            wb = xlrd.open_workbook(f)
-        # now open the file by reading from the temp file
+        xlsfile = request.FILES['file']
 
+        book = xlrd.open_workbook(xlsfile.name, file_contents=xlsfile.read())
+
+        sh = book.sheets()[0]
+        id_list = []
+        for i in range(sh.nrows):
+            if i == 0:
+                continue
+            id_list.append(int(sh.cell_value(i, 0)))
 
         return JsonResponse({'status': 'success', 'error': ""})
